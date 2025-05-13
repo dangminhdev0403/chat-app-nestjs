@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs'; // nhớ cài: npm install bcryptjs
+import { UserResponseDto } from '../users/dto/users.dto.response';
 import { User } from '../users/schemas/user.schema';
 import { UsersService } from '../users/service/users.service';
 
@@ -20,12 +21,12 @@ export class AuthService {
     return null;
   }
 
-  login(user: User): object {
+  async login(user: UserResponseDto): Promise<object> {
     const payload: { email: string; name: string } = {
       name: user.name,
       email: user.email,
     };
-    const accessToken = this.jwtService.sign(payload);
+    const accessToken = await this.jwtService.signAsync(payload);
     return {
       accessToken,
       user: {
