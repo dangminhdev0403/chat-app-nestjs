@@ -11,3 +11,10 @@ export class ResponseData<T> {
     this.data = data;
   }
 }
+
+export interface JWTDecoded {
+  nameid: string;
+  email: string;
+  iat: number;
+  exp: number;
+}

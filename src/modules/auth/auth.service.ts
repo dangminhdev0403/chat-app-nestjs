@@ -12,13 +12,21 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<User | null> {
+  async validateUser(email: string, password: string): Promise<User> {
     const user = await this.usersService.getUserByEmail(email);
     const isTrue: boolean = await bcrypt.compare(password, user.password);
     if (user && isTrue) {
       return user; // không trả mật khẩu
     }
-    return null;
+    throw new Error('Invalid credentials');
+  }
+
+  async validateUserJWTDecoded(email: string): Promise<User> {
+    const user = await this.usersService.getUserByEmail(email);
+    if (user) {
+      return user; // không trả mật khẩu
+    }
+    throw new Error('Unauthorized');
   }
 
   async login(user: UserResponseDto): Promise<object> {
