@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { UserResponseDto } from '../users/dto/users.dto.response';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './passport/jwt-auth.guard';
 import { LocalAuthGuard } from './passport/local-auth.guard';
 
 @Controller('auth')
@@ -25,7 +24,6 @@ export class AuthController {
     return await this.authService.login(req.user); // req.user là user đã được xác thực
   }
 
-  @UseGuards(JwtAuthGuard) // <-- Guard dùng chiến lược 'local' - xác thực bằng jwt token
   @Get('profile')
   getProfile(@Request() req: { user: UserResponseDto }) {
     return req.user;
